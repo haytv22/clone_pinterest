@@ -17,3 +17,8 @@ export const loginAPI = (email, password) => {
   };
   return axiosInstance.post(urlBackend, value);
 };
+
+export const getInfoUserAPI = () => {
+  const urlBackend = "auth/v1/user";
+  return axiosInstance.get(urlBackend);
+};
