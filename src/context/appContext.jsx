@@ -14,7 +14,7 @@ export const AppProvaider = ({ children }) => {
 export const useAppContext = () => {
   const context = useContext(appContext);
   if (!context) {
-    console.log("error contex");
+    console.log("error appContex");
   }
   return context;
 };

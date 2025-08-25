@@ -1,24 +1,37 @@
 import { Eye, EyeClosed } from "lucide-react";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginAPI } from "../services/api.services";
 import { useAppContext } from "../context/appContext";
+import { UseAuthContext } from "../context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 
 function LoginModal({ handleLoginWithGoogle }) {
   const { isLoginModal, setIsLoginModal } = useAppContext();
+  const { setInfoUser, setIsLogined } = UseAuthContext();
   const [toggle, setToggle] = useState(false);
+  const navigate = useNavigate();
   const EmailRef = useRef(null);
   const passwordRef = useRef(null);
 
   const handleLogin = async () => {
     const email = EmailRef.current?.value;
     const password = passwordRef.current?.value;
+
     if (email && password) {
       const res = await loginAPI(email, password);
-      if (res) {
+
+      if (res.access_token) {
         console.log(res);
         const access_token = res.access_token;
         localStorage.setItem("access_token", access_token);
+        setInfoUser(res.user_metadata);
+        setIsLogined(true);
+        navigate("/", { replace: true });
+      }
+
+      if (res.error_code && res.msg) {
+        toast.error(res.msg);
       }
     }
   };
@@ -93,6 +106,7 @@ function LoginModal({ handleLoginWithGoogle }) {
           Chưa tham gia Pinterest đăng ký?
         </p>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

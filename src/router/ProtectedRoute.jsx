@@ -1,0 +1,24 @@
+import React, { useEffect } from "react";
+import { UseAuthContext } from "../context/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import Loading from "../component/loading";
+
+function ProtectedRoute({ children }) {
+  const { isLogined, isLoading } = UseAuthContext();
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (!isLogined) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+export default ProtectedRoute;

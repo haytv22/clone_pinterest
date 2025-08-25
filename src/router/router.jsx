@@ -4,19 +4,26 @@ import MainLayot from "../layout/MainLayot";
 import HomePage from "../pages/Home.page";
 import NotFound from "../pages/NotFound";
 import LoginRegisterPage from "../pages/auth/LoginRegister.page";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayot />,
     children: [
-      { index: true, element: <HomePage /> },
+      {
+        index: true,
+        element: (
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        ),
+      },
       //   { path: "pin/:id", element: <PinDetail /> },
       //   { path: "upload", element: <Upload /> },
     ],
   },
   {
-    path: "/",
     element: <LoginRegister />,
     children: [
       { path: "login", element: <LoginRegisterPage /> },

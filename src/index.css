@@ -32,9 +32,9 @@ input {
   background-size: contain;
   background-position: center;
 }
-.modal_Logo{
+.modal_Logo {
   background-image: url(./accset/logo/pinterest.png);
-background-position: center;
-background-repeat: no-repeat;
-background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
