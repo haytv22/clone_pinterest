@@ -22,3 +22,11 @@ export const getInfoUserAPI = () => {
   const urlBackend = "auth/v1/user";
   return axiosInstance.get(urlBackend);
 };
+
+export const refreshTokenAPI = (refresh_token) => {
+  const urlBackend = "auth/v1/token?grant_type=refresh_token";
+  const value = {
+    refresh_token: refresh_token,
+  };
+  return axiosInstance.post(urlBackend, value);
+};

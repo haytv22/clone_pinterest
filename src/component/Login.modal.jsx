@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function LoginModal({ handleLoginWithGoogle }) {
   const { isLoginModal, setIsLoginModal } = useAppContext();
-  const { setInfoUser, setIsLogined } = UseAuthContext();
+  const { getUserInfo, validateEmail } = UseAuthContext();
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
   const EmailRef = useRef(null);
@@ -18,6 +18,13 @@ function LoginModal({ handleLoginWithGoogle }) {
     const email = EmailRef.current?.value;
     const password = passwordRef.current?.value;
 
+    const emailAuth = validateEmail(email);
+
+    if (!emailAuth) {
+      toast.error("vui lòng nhập Email đúng định dạng");
+      return;
+    }
+
     if (email && password) {
       const res = await loginAPI(email, password);
 
@@ -25,14 +32,15 @@ function LoginModal({ handleLoginWithGoogle }) {
         console.log(res);
         const access_token = res.access_token;
         localStorage.setItem("access_token", access_token);
-        setInfoUser(res.user_metadata);
-        setIsLogined(true);
+        await getUserInfo();
         navigate("/", { replace: true });
       }
 
       if (res.error_code && res.msg) {
         toast.error(res.msg);
       }
+    } else {
+      toast.error("Vui lòng nhập đầy đủ thông tin");
     }
   };
   return (
@@ -53,7 +61,7 @@ function LoginModal({ handleLoginWithGoogle }) {
               ref={EmailRef}
               className="w-full h-[50px] p-[12px] rounded-2xl border border-[#979793]"
               id="email"
-              type="text"
+              type="email"
               placeholder="Email"
             />
           </div>
@@ -61,6 +69,9 @@ function LoginModal({ handleLoginWithGoogle }) {
             <label htmlFor="pass">Password</label>
             <div className="relative w-full h-[50px] p-[12px] rounded-2xl border border-[#979793]">
               <input
+                onKeyDown={(e) => {
+                  e.key === "Enter" ? handleLogin() : "";
+                }}
                 ref={passwordRef}
                 className="w-full"
                 id="pass"
@@ -96,7 +107,7 @@ function LoginModal({ handleLoginWithGoogle }) {
             className="w-5 h-5"
           />
           <span className="text-sm font-medium text-gray-700">
-            Sign in with Google
+            login with Google
           </span>
         </button>
         <p

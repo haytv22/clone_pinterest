@@ -1,11 +1,14 @@
 import { Eye, EyeClosed } from "lucide-react";
-import React, { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signupAPI } from "../services/api.services";
 import { useAppContext } from "../context/appContext";
+import { UseAuthContext } from "../context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 
 function SignupModel({ handleLoginWithGoogle }) {
   const { isLoginModal, setIsLoginModal } = useAppContext();
+  const { getUserInfo, validateEmail } = UseAuthContext();
   const [toggle, setToggle] = useState(false);
   const EmailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -15,11 +18,25 @@ function SignupModel({ handleLoginWithGoogle }) {
     const email = EmailRef.current.value;
     const password = passwordRef.current.value;
 
-    const res = await signupAPI(email, password);
-    if (res?.access_token) {
-      localStorage.setItem("access_token", res.access_token);
-      localStorage.setItem("refresh_token", res.refresh_token);
-      navigate("/");
+    const emailAuth = validateEmail(email);
+
+    if (!emailAuth) {
+      toast.error("vui lòng nhập Email đúng định dạng");
+      return;
+    }
+
+    if (email && password) {
+      const res = await signupAPI(email, password);
+      if (res?.access_token) {
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
+        await getUserInfo();
+        navigate("/");
+      } else {
+        toast.error(res.msg);
+      }
+    } else {
+      toast.error("vui lòng nhập đầy đủ thông tin");
     }
   };
   return (
@@ -40,7 +57,7 @@ function SignupModel({ handleLoginWithGoogle }) {
               ref={EmailRef}
               className="w-full h-[50px] p-[12px] rounded-2xl border border-[#979793]"
               id="email"
-              type="text"
+              type="email"
               placeholder="Email"
             />
           </div>
@@ -48,6 +65,9 @@ function SignupModel({ handleLoginWithGoogle }) {
             <label htmlFor="pass">Password</label>
             <div className="relative w-full h-[50px] p-[12px] rounded-2xl border border-[#979793]">
               <input
+                onKeyDown={(e) => {
+                  e === "Enter" ? handleSignUp : "";
+                }}
                 ref={passwordRef}
                 className="w-full"
                 id="pass"
@@ -67,7 +87,7 @@ function SignupModel({ handleLoginWithGoogle }) {
             onClick={handleSignUp}
             className=" btn-red h-[36px] w-full rounded-xl text-white font-[500] cursor-pointer"
           >
-            Tiếp tục
+            Đăng ký
           </button>
         </div>
         <p>HOẶC</p>
@@ -91,6 +111,7 @@ function SignupModel({ handleLoginWithGoogle }) {
           Bạn đã là thành viên? Đăng nhập
         </p>
       </div>
+      <Toaster />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getInfoUserAPI } from "../services/api.services";
-import { useNavigate } from "react-router-dom";
+import { getInfoUserAPI, refreshTokenAPI } from "../services/api.services";
 import { readTokensFromUrl } from "../services/readTokensFromUrl";
 
 const context = createContext();
@@ -11,41 +10,61 @@ export const AuthContext = ({ children }) => {
   const [isLoading, setIsloading] = useState(true);
 
   const getUserInfo = async () => {
-    try {
-      const res = await getInfoUserAPI();
+    const res = await getInfoUserAPI();
+    console.log(res);
+
+    const refresTtoken = async () => {
+      const refresTtoken = localStorage.getItem("refresh_token");
+      const res = await refreshTokenAPI(refresTtoken);
 
       if (res) {
-        setInfoUser(res.user_metadata);
-        setIsLogined(true);
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
+        await getUserInfo();
+      } else {
+        setIsLogined(false);
+        setInfoUser(null);
       }
-    } catch (error) {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      setInfoUser(null);
-      console.log("token đã hết hạng nên xóa rồi :)");
-    } finally {
+    };
+
+    if (res.user_metadata) {
+      setInfoUser(res.user_metadata);
+      setIsLogined(true);
       setIsloading(false);
+    }
+    if (res.code === 403) {
+      refresTtoken();
     }
   };
-  console.log(infoUser);
+
+  const validateEmail = (value) => {
+    // regex cơ bản check email
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(value);
+  };
 
   useEffect(() => {
-    const tok = readTokensFromUrl();
+    const checkAndGetUserInfo = async () => {
+      const tok = readTokensFromUrl();
 
-    if (tok?.access_token) {
-      localStorage.setItem("access_token", tok.access_token);
-      if (tok.refresh_token)
-        localStorage.setItem("refresh_token", tok.refresh_token);
-    }
-    const token = localStorage.getItem("access_token");
+      if (tok?.access_token) {
+        localStorage.setItem("access_token", tok.access_token);
+        if (tok.refresh_token) {
+          localStorage.setItem("refresh_token", tok.refresh_token);
+        }
+      }
 
-    if (token && isLogined === false) {
-      console.log("chay");
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        await getUserInfo();
+      } else {
+        console.log("chay vao else");
 
-      getUserInfo();
-    } else {
-      setIsloading(false);
-    }
+        setIsloading(false);
+      }
+    };
+
+    checkAndGetUserInfo();
   }, []);
 
   const value = {
@@ -54,6 +73,8 @@ export const AuthContext = ({ children }) => {
     isLogined,
     isLoading,
     setIsLogined,
+    getUserInfo,
+    validateEmail,
   };
 
   return <context.Provider value={value}>{children}</context.Provider>;
