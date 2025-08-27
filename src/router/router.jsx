@@ -9,15 +9,15 @@ import ProtectedRoute from "./ProtectedRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayot />,
+    element: (
+      <ProtectedRoute>
+        <MainLayot />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
-        element: (
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        ),
+        element: <HomePage />,
       },
       //   { path: "pin/:id", element: <PinDetail /> },
       //   { path: "upload", element: <Upload /> },

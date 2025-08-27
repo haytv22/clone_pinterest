@@ -1,5 +1,5 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import animation from "../accset/Loading animation blue.json";
+import animation from "../accset/animation/Loading animation blue.json";
 import React from "react";
 import Lottie from "lottie-react";
 

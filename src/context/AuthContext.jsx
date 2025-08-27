@@ -11,7 +11,6 @@ export const AuthContext = ({ children }) => {
 
   const getUserInfo = async () => {
     const res = await getInfoUserAPI();
-    console.log(res);
 
     const refresTtoken = async () => {
       const refresTtoken = localStorage.getItem("refresh_token");
@@ -29,6 +28,7 @@ export const AuthContext = ({ children }) => {
 
     if (res.user_metadata) {
       setInfoUser(res.user_metadata);
+
       setIsLogined(true);
       setIsloading(false);
     }
