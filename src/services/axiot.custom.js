@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
         console.warn("Token hết hạn. Vui lòng đăng nhập lại.");
         window.location.href = "/login";
       } else {
-        return error.response.data;
+        return Promise.reject(error.response.data);
       }
     }
     return Promise.reject(error);

@@ -10,30 +10,35 @@ export const AuthContext = ({ children }) => {
   const [isLoading, setIsloading] = useState(true);
 
   const getUserInfo = async () => {
-    const res = await getInfoUserAPI();
-
     const refresTtoken = async () => {
       const refresTtoken = localStorage.getItem("refresh_token");
-      const res = await refreshTokenAPI(refresTtoken);
+      try {
+        const res = await refreshTokenAPI(refresTtoken);
 
-      if (res) {
-        localStorage.setItem("access_token", res.access_token);
-        localStorage.setItem("refresh_token", res.refresh_token);
-        await getUserInfo();
-      } else {
+        if (res) {
+          localStorage.setItem("access_token", res.access_token);
+          localStorage.setItem("refresh_token", res.refresh_token);
+          await getUserInfo();
+        }
+      } catch (error) {
+        console.log("refreshToken error:", error);
         setIsLogined(false);
         setInfoUser(null);
       }
     };
+    try {
+      const res = await getInfoUserAPI();
 
-    if (res.user_metadata) {
-      setInfoUser(res.user_metadata);
+      if (res.user_metadata) {
+        setInfoUser(res.user_metadata);
 
-      setIsLogined(true);
-      setIsloading(false);
-    }
-    if (res.code === 403) {
-      refresTtoken();
+        setIsLogined(true);
+        setIsloading(false);
+      }
+    } catch (error) {
+      if (error.code === 403) {
+        refresTtoken();
+      }
     }
   };
 
@@ -58,12 +63,9 @@ export const AuthContext = ({ children }) => {
       if (token) {
         await getUserInfo();
       } else {
-        console.log("chay vao else");
-
         setIsloading(false);
       }
     };
-
     checkAndGetUserInfo();
   }, []);
 

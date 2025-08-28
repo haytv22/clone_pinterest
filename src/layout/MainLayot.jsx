@@ -14,10 +14,31 @@ import { UseAuthContext } from "../context/AuthContext";
 import Tooltip from "../component/tooltip";
 import CompassMenu from "../component/Dropdown_menu/compassMenu";
 import UserInfoMenu from "../component/Dropdown_menu/UserInfoMenu";
+import { useEffect, useRef, useState } from "react";
 
 function MainLayot() {
   const { infoUser } = UseAuthContext();
   console.log(infoUser);
+
+  const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
+  const MenuInfoRef = useRef();
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (MenuInfoRef.current && !MenuInfoRef.current.contains(e.target)) {
+        setIsOpenUserMenu(false);
+        // click ngoài => đóng menu
+      }
+    }
+    if (isOpenUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpenUserMenu]);
 
   return (
     <div className="flex w-full">
@@ -48,12 +69,15 @@ function MainLayot() {
             <Compass />
             <CompassMenu className="left-full top-1/2 -translate-y-1/2" />
           </Link>
-          <div className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]">
+          <Link
+            to="upload"
+            className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]"
+          >
             <SquarePlus />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
-              Tạo{" "}
+              Tạo
             </Tooltip>
-          </div>
+          </Link>
           <div className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]">
             <Bell />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
@@ -97,9 +121,16 @@ function MainLayot() {
                 Hồ sơ của bạn
               </Tooltip>
             </div>
-            <div className=" relative">
-              <UserInfoMenu className='top-[100%] mt-5 -right-3'/>
-              <div className="group">
+            <div ref={MenuInfoRef} className=" relative">
+              {isOpenUserMenu ? (
+                <UserInfoMenu className="top-[100%] mt-5 -right-3" />
+              ) : (
+                ""
+              )}
+              <div
+                onClick={() => setIsOpenUserMenu(!isOpenUserMenu)}
+                className="group"
+              >
                 <ChevronDown className="text-[#8e8e89] cursor-pointer" />
                 <Tooltip className="-bottom-10 left-1 -translate-x-1/2">
                   Tài khoản
