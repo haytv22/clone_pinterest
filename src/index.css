@@ -38,3 +38,10 @@ input {
   background-repeat: no-repeat;
   background-size: contain;
 }
+.text-color{
+  color: #72726c;
+}
+
+.hover_nemu:hover{
+  background-color: #e5e5e5;
+}

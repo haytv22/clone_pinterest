@@ -13,6 +13,7 @@ import avatarDefaul from "../accset/logo/avatar-defaul.png";
 import { UseAuthContext } from "../context/AuthContext";
 import Tooltip from "../component/tooltip";
 import CompassMenu from "../component/Dropdown_menu/compassMenu";
+import UserInfoMenu from "../component/Dropdown_menu/UserInfoMenu";
 
 function MainLayot() {
   const { infoUser } = UseAuthContext();
@@ -81,7 +82,7 @@ function MainLayot() {
             <input
               className="w-[100%] h-full text-[#2f2f2ad6] font-[500] text-[16px] "
               type="text"
-              placeholder="Tiềm kiếm"
+              placeholder="Tìm kiếm"
             />
           </div>
 
@@ -96,11 +97,14 @@ function MainLayot() {
                 Hồ sơ của bạn
               </Tooltip>
             </div>
-            <div className="group relative">
-              <ChevronDown className="text-[#8e8e89] cursor-pointer" />
-              <Tooltip className="-bottom-10 left-1 -translate-x-1/2">
-                Tài khoản
-              </Tooltip>
+            <div className=" relative">
+              <UserInfoMenu className='top-[100%] mt-5 -right-3'/>
+              <div className="group">
+                <ChevronDown className="text-[#8e8e89] cursor-pointer" />
+                <Tooltip className="-bottom-10 left-1 -translate-x-1/2">
+                  Tài khoản
+                </Tooltip>
+              </div>
             </div>
           </div>
         </div>
