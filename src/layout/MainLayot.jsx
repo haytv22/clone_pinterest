@@ -42,7 +42,7 @@ function MainLayot() {
 
   return (
     <div className="flex w-full">
-      <div className=" border-r-[#00000026] border-r-[1px] flex flex-col items-center justify-between h-[100vh] w-[75px] py-8">
+      <div className=" z-10 fixed bg-white border-r-[#00000026] border-r-[1px] flex flex-col items-center justify-between h-[100vh] w-[75px] py-8">
         <div className=" flex flex-col gap-5">
           <Link
             to="/"
@@ -99,8 +99,8 @@ function MainLayot() {
         </div>
       </div>
 
-      <div className="w-full">
-        <div className="gap-3 w-full h-[80px] flex items-center justify-between px-5">
+      <div className="ml-[74px] w-full">
+        <div className="  w-[calc(100%-74px)] fixed bg-white gap-3 h-[80px] flex items-center justify-between px-5">
           <div className="hover:bg-[#e1e1e1] px-5 gap-2 flex flex-1 bg-[#f1f1f1] h-[48px] rounded-2xl items-center justify-center">
             <Search className="size-[16px] text-[#62625B]" />
             <input
@@ -139,7 +139,9 @@ function MainLayot() {
             </div>
           </div>
         </div>
-        <Outlet />
+        <main className="pt-[80px]">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

@@ -35,3 +35,29 @@ export const getImgApi = () => {
   const urlBackend = "/rest/v1/pins?select=*";
   return axiosInstance.get(urlBackend);
 };
+
+export const uploaImgAPI = async (path, file, fileName) => {
+  const url = `storage/v1/object/${path}/${fileName}`;
+
+  return axiosInstance.post(url, file, {
+    headers: {
+      "Content-Type": file.type || "application/octet-stream",
+      apikey: import.meta.env.VITE_API_KEY,
+      Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+    },
+  });
+};
+
+export const insertPinAPI = (pinData) => {
+  const url = "/rest/v1/pins";
+  return axiosInstance.post(url, pinData, {
+    headers: {
+      Prefer: "return=representation", // trả về row vừa insert
+    },
+  });
+};
+
+export const logOutAPI = () => {
+  const url = "/auth/v1/logout";
+  return axiosInstance.post(url);
+};
