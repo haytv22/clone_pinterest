@@ -6,6 +6,7 @@ import NotFound from "../pages/NotFound";
 import LoginRegisterPage from "../pages/auth/LoginRegister.page";
 import ProtectedRoute from "./ProtectedRoute";
 import UpLoadPage from "../pages/UpLoadPage";
+import { PinDetailPage } from "../pages/PinDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-      //   { path: "pin/:id", element: <PinDetail /> },
+      { path: "pin/:id", element: <PinDetailPage /> },
       { path: "upload", element: <UpLoadPage /> },
     ],
   },

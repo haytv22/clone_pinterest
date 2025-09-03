@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { UseAuthContext } from "../context/AuthContext";
 import { getImgApi } from "../services/api.services";
+import { Link } from "react-router-dom";
 function HomePage() {
   const { infoUser } = UseAuthContext();
   const [pins, setPins] = useState();
@@ -27,7 +28,9 @@ function HomePage() {
                 key={pin.id}
                 className=" mb-4 break-inside-avoid rounded-xl shadow-md overflow-hidden"
               >
-                <img src={pin.image_url} alt={pin.title} />
+                <Link to={`pin/${pin.id}`}>
+                  <img src={pin.image_url} alt={pin.title} />
+                </Link>
               </div>
             );
           })
