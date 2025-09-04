@@ -31,11 +31,6 @@ export const refreshTokenAPI = (refresh_token) => {
   return axiosInstance.post(urlBackend, value);
 };
 
-export const getImgApi = () => {
-  const urlBackend = "/rest/v1/pins?select=*";
-  return axiosInstance.get(urlBackend);
-};
-
 export const uploaImgAPI = async (path, file, fileName) => {
   const url = `storage/v1/object/${path}/${fileName}`;
 

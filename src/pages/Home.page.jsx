@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { UseAuthContext } from "../context/AuthContext";
-import { getImgApi, getPinsAPI } from "../services/api.services";
+import { getPinsAPI } from "../services/api.services";
 import { Link } from "react-router-dom";
 import Loading from "../component/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
 function HomePage() {
-  const { infoUser } = UseAuthContext();
-  const [pins, setPins] = useState();
-
   const LIMIT = 20;
   const loadMoreRef = useRef(null);
 
