@@ -82,7 +82,7 @@ function UpLoadPage() {
         </button>
       </div>
       <div className="w-full flex lg:flex-row flex-col items-center justify-center">
-        <div className="lg:w-[45%] w-full p-5 px-45 lg:px-20 ">
+        <div className="lg:w-[45%] w-full p-5 md:px-45 px-5 lg:px-20 ">
           <label htmlFor="upImg" className="cursor-pointer">
             {urlImgDemo ? (
               <img src={urlImgDemo} alt="" className="rounded-2xl" />
@@ -108,7 +108,7 @@ function UpLoadPage() {
             type="file"
           />
         </div>
-        <div className=" lg:w-[55%] w-full p-10 flex flex-col items-center justify-between gap-5">
+        <div className=" lg:w-[55%] w-full md:p-10 p-5 flex flex-col items-center justify-between gap-5">
           <div className=" w-full flex flex-col gap-3">
             <label className="text-[13px]" htmlFor="tieuDe">
               Tiêu đề
