@@ -12,7 +12,7 @@ import { Link, Outlet } from "react-router-dom";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
 import { UseAuthContext } from "../context/AuthContext";
 import Tooltip from "../component/tooltip";
-import CompassMenu from "../component/Dropdown_menu/compassMenu";
+import CompassMenu from "../component/Dropdown_menu/CompassMenu";
 import UserInfoMenu from "../component/Dropdown_menu/UserInfoMenu";
 import { useEffect, useRef, useState } from "react";
 
