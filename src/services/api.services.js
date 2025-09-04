@@ -61,3 +61,10 @@ export const logOutAPI = () => {
   const url = "/auth/v1/logout";
   return axiosInstance.post(url);
 };
+
+export const getPinsAPI = (from, to) => {
+  const url = `/rest/v1/pins?select=*&order=created_at.desc`;
+  return axiosInstance.get(url, {
+    headers: { Range: `${from}-${to}` },
+  });
+};
