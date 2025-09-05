@@ -63,3 +63,8 @@ export const getPinsAPI = (from, to) => {
     headers: { Range: `${from}-${to}` },
   });
 };
+
+export const getPinByIdAPI = (id)=>{
+  const url = `/rest/v1/pins?id=eq.${id}&select=*`;
+  return axiosInstance.get(url)
+}

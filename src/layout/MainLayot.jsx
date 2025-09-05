@@ -22,6 +22,7 @@ function MainLayot() {
 
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
   const MenuInfoRef = useRef();
+  const [active,setActive] =useState('House')
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -40,6 +41,8 @@ function MainLayot() {
     };
   }, [isOpenUserMenu]);
 
+
+
   return (
     <div className="flex w-full">
       <div className=" z-10 fixed bg-white border-r-[#00000026] border-r-[1px] flex flex-col items-center justify-between h-[100vh] w-[75px] py-8">
@@ -54,31 +57,34 @@ function MainLayot() {
             </Tooltip>
           </Link>
           <Link
+            onClick={()=>setActive('House')}
             to="/"
-            className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]"
+            className={`${active == 'House'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
-            <House />
+            <House/>
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Trang chủ
             </Tooltip>
           </Link>
           <Link
+            onClick={()=>setActive('Compass')}
             to="/ideas"
-            className="group relative h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]"
+            className={`${active == 'Compass'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
             <Compass />
             <CompassMenu className="left-full top-1/2 -translate-y-1/2" />
           </Link>
           <Link
+            onClick={()=>setActive('SquarePlus')}
             to="upload"
-            className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]"
+            className={`${active == 'SquarePlus'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
             <SquarePlus />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Tạo
             </Tooltip>
           </Link>
-          <div className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]">
+          <div onClick={()=>setActive('Bell')} className={`${active == 'Bell'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}>
             <Bell />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Cập nhật{" "}
@@ -91,7 +97,7 @@ function MainLayot() {
           </div>
         </div>
 
-        <div className="relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]">
+        <div onClick={()=>setActive('Settings')} className={`${active == 'Settings'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}>
           <Settings />
           <Tooltip className="left-full top-1/2 -translate-y-1/2">
             Cài đặt và Hỗ trợ{" "}
