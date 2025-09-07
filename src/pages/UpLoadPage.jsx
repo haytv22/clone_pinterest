@@ -10,13 +10,7 @@ function UpLoadPage() {
   const [file, setFile] = useState();
   const descriptionRef = useRef();
   const TitleRef = useRef();
-
-  const getSupabaseUid = () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.sub; // đây là auth.uid()
-  };
+  const { userID } = UseAuthContext();
 
   const handelClick = async () => {
     if (TitleRef.current.value && file && descriptionRef.current.value) {
@@ -37,7 +31,7 @@ function UpLoadPage() {
             import.meta.env.VITE_SUPABASE_URL
           }/storage/v1/object/public/${res.Key}`;
 
-          const UID = getSupabaseUid();
+          const UID = userID;
           const data = {
             user_id: UID,
             title: title,

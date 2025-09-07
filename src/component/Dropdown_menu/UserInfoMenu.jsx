@@ -3,7 +3,7 @@ import { UseAuthContext } from "../../context/AuthContext";
 import avatarDefaul from "../../accset/logo/avatar-defaul.png";
 import { logOutAPI } from "../../services/api.services";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function UserInfoMenu({ className }) {
   const { infoUser } = UseAuthContext();
@@ -25,12 +25,14 @@ function UserInfoMenu({ className }) {
     <div
       className={`gap-5 absolute shadow-2xl flex whitespace-nowrap flex-col p-3 bg-white rounded-2xl items-start w-[360px] ${className}`}
     >
-      <Toaster position="bottom-center" />
       <div className="flex flex-col w-full items-start gap-1 cursor-pointer">
         <p className="text-[#72726c] text-[12px] font-[500] p-3">
           Đang đăng nhập
         </p>
-        <div className="flex flex-row gap-3 justify-start w-full rounded-2xl hover_nemu p-3">
+        <Link
+          to="/profile"
+          className="flex flex-row gap-3 justify-start w-full rounded-2xl hover_nemu p-3"
+        >
           <img
             className="h-[60px] w-[60px] rounded-full "
             src={infoUser?.avatar_url || avatarDefaul}
@@ -40,7 +42,7 @@ function UserInfoMenu({ className }) {
             <p className="font-bold ">{infoUser?.full_name}</p>
             <p className="text-color text-[14px]">{infoUser?.email}</p>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="flex flex-col w-full">
         <p className="text-[#72726c] text-[12px] font-[500] pl-3">

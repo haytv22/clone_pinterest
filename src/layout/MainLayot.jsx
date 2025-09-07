@@ -18,11 +18,9 @@ import { useEffect, useRef, useState } from "react";
 
 function MainLayot() {
   const { infoUser } = UseAuthContext();
-  console.log(infoUser);
-
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
   const MenuInfoRef = useRef();
-  const [active,setActive] =useState('House')
+  const [active, setActive] = useState("House");
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -41,11 +39,10 @@ function MainLayot() {
     };
   }, [isOpenUserMenu]);
 
-
-
   return (
     <div className="flex w-full">
-      <div className=" z-10 fixed bg-white border-r-[#00000026] border-r-[1px] flex flex-col items-center justify-between h-[100vh] w-[75px] py-8">
+      {/* menu left */}
+      <div className=" z-100 fixed bg-white border-r-[#00000026] border-r-[1px] flex flex-col items-center justify-between h-[100vh] w-[75px] py-8">
         <div className=" flex flex-col gap-5">
           <Link
             to="/"
@@ -57,34 +54,47 @@ function MainLayot() {
             </Tooltip>
           </Link>
           <Link
-            onClick={()=>setActive('House')}
+            onClick={() => setActive("House")}
             to="/"
-            className={`${active == 'House'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
+            className={`${
+              active == "House" ? "bg-[#18181661] hover:bg-[#18181661]" : ""
+            } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
-            <House/>
+            <House />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Trang chủ
             </Tooltip>
           </Link>
           <Link
-            onClick={()=>setActive('Compass')}
+            onClick={() => setActive("Compass")}
             to="/ideas"
-            className={`${active == 'Compass'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
+            className={`${
+              active == "Compass" ? "bg-[#18181661] hover:bg-[#18181661]" : ""
+            } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
             <Compass />
             <CompassMenu className="left-full top-1/2 -translate-y-1/2" />
           </Link>
           <Link
-            onClick={()=>setActive('SquarePlus')}
+            onClick={() => setActive("SquarePlus")}
             to="upload"
-            className={`${active == 'SquarePlus'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
+            className={`${
+              active == "SquarePlus"
+                ? "bg-[#18181661] hover:bg-[#18181661]"
+                : ""
+            } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
           >
             <SquarePlus />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Tạo
             </Tooltip>
           </Link>
-          <div onClick={()=>setActive('Bell')} className={`${active == 'Bell'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}>
+          <div
+            onClick={() => setActive("Bell")}
+            className={`${
+              active == "Bell" ? "bg-[#18181661] hover:bg-[#18181661]" : ""
+            } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
+          >
             <Bell />
             <Tooltip className="left-full top-1/2 -translate-y-1/2">
               Cập nhật{" "}
@@ -97,7 +107,12 @@ function MainLayot() {
           </div>
         </div>
 
-        <div onClick={()=>setActive('Settings')} className={`${active == 'Settings'? 'bg-[#18181661] hover:bg-[#18181661]':''} relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}>
+        <div
+          onClick={() => setActive("Settings")}
+          className={`${
+            active == "Settings" ? "bg-[#18181661] hover:bg-[#18181661]" : ""
+          } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
+        >
           <Settings />
           <Tooltip className="left-full top-1/2 -translate-y-1/2">
             Cài đặt và Hỗ trợ{" "}
@@ -105,8 +120,9 @@ function MainLayot() {
         </div>
       </div>
 
+      {/* menu top */}
       <div className="ml-[74px] w-full">
-        <div className="  w-[calc(100%-74px)] fixed bg-white gap-3 h-[80px] flex items-center justify-between px-5">
+        <div className="  z-99 w-[calc(100%-74px)] fixed bg-white gap-3 h-[80px] flex items-center justify-between px-5">
           <div className="hover:bg-[#e1e1e1] px-5 gap-2 flex flex-1 bg-[#f1f1f1] h-[48px] rounded-2xl items-center justify-center">
             <Search className="size-[16px] text-[#62625B]" />
             <input
@@ -117,7 +133,7 @@ function MainLayot() {
           </div>
 
           <div className="flex flex-row items-center justify-center gap-1">
-            <div className="relative group">
+            <Link to="/profile" className="relative group">
               <img
                 className="size-[32px] rounded-full cursor-pointer"
                 src={infoUser?.avatar_url || avatarDefaul}
@@ -126,7 +142,7 @@ function MainLayot() {
               <Tooltip className="-bottom-10 left-1/2 -translate-x-1/2">
                 Hồ sơ của bạn
               </Tooltip>
-            </div>
+            </Link>
             <div ref={MenuInfoRef} className=" relative">
               {isOpenUserMenu ? (
                 <UserInfoMenu className="top-[100%] mt-5 -right-3" />

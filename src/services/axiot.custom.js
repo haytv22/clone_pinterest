@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SUPABASE_URL, // lấy base URL từ env
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     apikey: import.meta.env.VITE_API_KEY,
     "Content-Type": "application/json",

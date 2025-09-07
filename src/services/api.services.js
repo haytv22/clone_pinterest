@@ -38,7 +38,6 @@ export const uploaImgAPI = async (path, file, fileName) => {
     headers: {
       "Content-Type": file.type || "application/octet-stream",
       apikey: import.meta.env.VITE_API_KEY,
-      Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
     },
   });
 };
@@ -57,14 +56,76 @@ export const logOutAPI = () => {
   return axiosInstance.post(url);
 };
 
-export const getPinsAPI = (from, to) => {
-  const url = `/rest/v1/pins?select=*&order=created_at.desc`;
+export const getPinsAPI = (from, to, excludeId) => {
+  let url = `/rest/v1/pins?select=*&order=created_at.desc`;
+
+  if (excludeId) {
+    url += `&id=neq.${excludeId}`;
+  }
+
   return axiosInstance.get(url, {
-    headers: { Range: `${from}-${to}` },
+    headers: {
+      Range: `${from}-${to}`,
+    },
   });
 };
 
-export const getPinByIdAPI = (id)=>{
-  const url = `/rest/v1/pins?id=eq.${id}&select=*`;
-  return axiosInstance.get(url)
-}
+export const getPinDetailAPI = (pinId) => {
+  const url = `/rest/v1/pins?id=eq.${pinId}&select=*,profile:profiles(id,full_name,avatar_url)`;
+  return axiosInstance.get(url);
+};
+
+// tim
+// them tim
+export const addLikeAPI = (pin_id, user_id) => {
+  const url = "/rest/v1/likes";
+  const value = {
+    pin_id: pin_id,
+    user_id: user_id,
+  };
+  return axiosInstance.post(url, value);
+};
+// bo tim
+export const deleteLikeAPI = (pin_id, user_id) => {
+  const url = `/rest/v1/likes?pin_id=eq.${pin_id}&user_id=eq.${user_id}`;
+
+  return axiosInstance.delete(url);
+};
+// dem tim
+export const countLikeAPI = async (pin_id) => {
+  const url = `/rest/v1/likes?pin_id=eq.${pin_id}&select=id`;
+
+  return await axiosInstance.get(url);
+};
+
+// kiem tra tim hay chua
+export const getLikedAPI = (pin_id, user_id) => {
+  const url = `/rest/v1/likes?pin_id=eq.${pin_id}&user_id=eq.${user_id}`;
+  return axiosInstance.get(url);
+};
+
+export const getLinkDowImgAPI = (urlPin) => {
+  return axiosInstance.get(urlPin, {
+    responseType: "blob", // bắt buộc để nhận blob
+  });
+};
+
+export const getProfileAPI = (userId) => {
+  const url = "/rest/v1/profiles";
+  return axiosInstance.get(url, {
+    params: {
+      id: `eq.${userId}`,
+      select: "*",
+    },
+  });
+};
+
+export const getPinsUserAPI = (userId) => {
+  const url = `/rest/v1/pins?user_id=eq.${userId}&select=*,profile:profiles(id,full_name,avatar_url)&order=created_at.desc`;
+  return axiosInstance.get(url);
+};
+
+export const getUserLikedPinsAPI = (userId) => {
+  const url = `/rest/v1/likes?user_id=eq.${userId}&select=pin:pins(*,profile:profiles(id,full_name,avatar_url))&order=created_at.desc`;
+  return axiosInstance.get(url);
+};

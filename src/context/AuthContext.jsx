@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getInfoUserAPI, refreshTokenAPI } from "../services/api.services";
 import { readTokensFromUrl } from "../services/readTokensFromUrl";
+import { useNavigate } from "react-router-dom";
 
 const context = createContext();
 
@@ -8,6 +9,7 @@ export const AuthContext = ({ children }) => {
   const [infoUser, setInfoUser] = useState(null);
   const [isLogined, setIsLogined] = useState(false);
   const [isLoading, setIsloading] = useState(true);
+  const [userID, setUserID] = useState(true);
 
   const getUserInfo = async () => {
     const refresTtoken = async () => {
@@ -24,6 +26,7 @@ export const AuthContext = ({ children }) => {
         console.log("refreshToken error:", error);
         setIsLogined(false);
         setInfoUser(null);
+        window.location.href = "/login";
       }
     };
     try {
@@ -36,9 +39,7 @@ export const AuthContext = ({ children }) => {
         setIsloading(false);
       }
     } catch (error) {
-      if (error.code === 403) {
-        refresTtoken();
-      }
+      refresTtoken();
     }
   };
 
@@ -46,6 +47,13 @@ export const AuthContext = ({ children }) => {
     // regex cơ bản check email
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value);
+  };
+
+  const getSupabaseUid = () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    setUserID(payload.sub); // đây là auth.uid()
   };
 
   useEffect(() => {
@@ -67,9 +75,11 @@ export const AuthContext = ({ children }) => {
       }
     };
     checkAndGetUserInfo();
+    getSupabaseUid();
   }, []);
 
   const value = {
+    userID,
     infoUser,
     setInfoUser,
     isLogined,

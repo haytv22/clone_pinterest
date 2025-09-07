@@ -37,20 +37,23 @@ function HomePage() {
   return (
     <>
       <div className="2xl:columns-7 xl:columns-5 lg:columns-4 md:columns-3 sm:columns-2 columns-2 gap-4 p-4 ">
-        {pinsValue
-          ? pinsValue.map((pin) => {
-              return (
-                <div
-                  key={pin.id}
-                  className=" mb-4 break-inside-avoid rounded-xl shadow-md overflow-hidden"
-                >
-                  <Link to={`pin/${pin.id}`}>
-                    <img src={pin.image_url} alt={pin.title} />
-                  </Link>
-                </div>
-              );
-            })
-          : ""}
+        {pinsValue &&
+          pinsValue.map((pin) => {
+            return (
+              <div
+                key={pin.id}
+                className=" mb-4 break-inside-avoid rounded-xl shadow-md overflow-hidden relative group"
+              >
+                <Link to={`pin/${pin.id}`}>
+                  <div className="group-hover:flex hidden cursor-pointer absolute inset-0 bg-gradient-to-t from-gray-800/80 to-transparent p-5 flex-col items-start justify-end">
+                    <p className="text-white font-bold">{pin.title}</p>
+                    <p className="text-white">{pin.description}</p>
+                  </div>
+                  <img src={pin.image_url} alt={pin.title} />
+                </Link>
+              </div>
+            );
+          })}
       </div>
       <div
         ref={loadMoreRef}
