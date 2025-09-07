@@ -1,18 +1,20 @@
 import { ImageUp, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
-import { uploaImgAPI } from "../services/api.services";
+import { updataUserProfileAPI, uploaImgAPI } from "../services/api.services";
 
 function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
-  const TitleRef = useRef();
+  const nameRef = useRef();
   const [urlImgDemo, setUrlImgDemo] = useState();
   const [fileAvatar, setFileAvatar] = useState();
+  const [loading, setLoading] = useState();
 
   const handelUpdataUser = async () => {
     const safeName = fileAvatar?.name
       ? fileAvatar.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")
       : "image.jpg";
     const fileName = `${Date.now()}-${safeName}`;
+
     try {
       const res = await uploaImgAPI("pins", fileAvatar, fileName);
       const key = res.Key;
@@ -21,9 +23,18 @@ function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
       }/storage/v1/object/public/${key}`;
 
       console.log(urlAvatar);
-      // try {
-      //   // const res = await
-      // } catch (error) {}
+      try {
+        console.log(dataProfile.id, nameRef.current.value, urlAvatar);
+
+        const res = await updataUserProfileAPI(
+          dataProfile.id,
+          nameRef.current.value,
+          urlAvatar
+        );
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -96,7 +107,7 @@ function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
               Tên
             </label>
             <input
-              ref={TitleRef}
+              ref={nameRef}
               className="w-full bg-color px-5 rounded-2xl h-[70px] font-bold text-gray-800"
               type="text"
               id="tieuDe"

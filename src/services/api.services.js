@@ -129,3 +129,16 @@ export const getUserLikedPinsAPI = (userId) => {
   const url = `/rest/v1/likes?user_id=eq.${userId}&select=pin:pins(*,profile:profiles(id,full_name,avatar_url))&order=created_at.desc`;
   return axiosInstance.get(url);
 };
+
+export const updataUserProfileAPI = (userId, Name, linkAvatar) => {
+  const url = `/rest/v1/profiles?id=eq.${userId}`;
+  const value = {
+    full_name: Name,
+    avatar_url: linkAvatar,
+  };
+  return axiosInstance.patch(url, value, {
+    headers: {
+      Prefer: "return=representation",
+    },
+  });
+};
