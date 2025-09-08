@@ -128,7 +128,7 @@ export const PinDetailPage = () => {
     const allPins = data?.pages.flat() || [];
     const total = allPins.length;
 
-    const leftSize = Math.floor(total * 0.4);
+    const leftSize = Math.floor(total * 0.5);
     const left = allPins.slice(0, leftSize);
     const right = allPins.slice(leftSize);
 
@@ -190,7 +190,7 @@ export const PinDetailPage = () => {
                 <img
                   src={pinDetail?.profile.avatar_url}
                   alt={pinDetail?.profile.full_name}
-                  className="rounded-full object-cover h-8"
+                  className="rounded-full object-cover size-8"
                 />
                 <p className="font-[500]">{pinDetail?.profile.full_name}</p>
               </div>

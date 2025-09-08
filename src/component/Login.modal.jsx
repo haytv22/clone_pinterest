@@ -117,7 +117,6 @@ function LoginModal({ handleLoginWithGoogle }) {
           Chưa tham gia Pinterest đăng ký?
         </p>
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

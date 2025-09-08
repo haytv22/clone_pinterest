@@ -65,7 +65,6 @@ function UpLoadPage() {
 
   return (
     <div className="w-full">
-      <Toaster />
       <div className="w-full h-[72px] flex items-center justify-between px-5 border-t-1 border-b-1 border-[#e5e5e0]">
         <h2 className="font-[700] text-[20px] text-black">Thêm ảnh mới</h2>
         <button
