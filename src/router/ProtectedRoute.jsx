@@ -6,6 +6,9 @@ import Loading from "../component/Loading";
 function ProtectedRoute({ children }) {
   const { isLogined, isLoading } = UseAuthContext();
 
+  console.log("loading", isLoading);
+  console.log("islogin", isLogined);
+
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center w-full">

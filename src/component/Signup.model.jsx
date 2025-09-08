@@ -111,7 +111,6 @@ function SignupModel({ handleLoginWithGoogle }) {
           Bạn đã là thành viên? Đăng nhập
         </p>
       </div>
-      <Toaster />
     </div>
   );
 }
