@@ -176,8 +176,8 @@ export const PinDetailPage = () => {
               </div>
             </div>
             <div className="w-full">
-              <div className="overflow-hidden rounded-2xl mx-auto w-[90%]">
-                <img src={pinDetail?.image_url} alt={pinDetail?.description} />
+              <div className="w-full">
+                <img className="object-contain mx-auto max-h-[80vh] rounded-2xl" src={pinDetail?.image_url} alt={pinDetail?.description} />
               </div>
             </div>
             <div className=" w-full flex flex-col items-start justify-center gap-3">
@@ -197,7 +197,7 @@ export const PinDetailPage = () => {
             </div>
           </div>
 
-          <div className="columns-2 hidden md:block">
+          <div className="lg:columns-3 columns-2 hidden md:block">
             {leftPins &&
               leftPins.map((pin) => {
                 return (
@@ -218,7 +218,7 @@ export const PinDetailPage = () => {
           </div>
         </div>
         <div className="col-span-1">
-          <div className="columns-2">
+          <div className="columns-2 lg:columns-3">
             {rightPins &&
               rightPins.map((pin) => {
                 return (
