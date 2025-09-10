@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuthContex } from "../../context/AuthContext2";
+import { useAuthContex } from "../../context/AuthContext";
 import avatarDefaul from "../../accset/logo/avatar-defaul.png";
 import { logOutAPI } from "../../services/api.services";
 import toast, { Toaster } from "react-hot-toast";

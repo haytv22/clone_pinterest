@@ -1,100 +1,67 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import {
-  getInfoUserAPI,
-  getProfileAPI,
-  refreshTokenAPI,
-} from "../services/api.services";
 import { readTokensFromUrl } from "../services/readTokensFromUrl";
-import { useNavigate } from "react-router-dom";
+import { getProfileAPI, refreshTokenAPI } from "../services/api.services";
 
-const context = createContext();
+const contextCre = createContext();
 
-export const AuthContext = ({ children }) => {
-  const [infoUser, setInfoUser] = useState(null);
-  const [isLogined, setIsLogined] = useState(false);
+export const AuthProvider = ({ children }) => {
+  const [infoUser, setInfoUser] = useState();
   const [isLoading, setIsloading] = useState(true);
-  const [userID, setUserID] = useState(null);
-  const [token, setToken] = useState(null);
+  const [isLogined, setIsLogined] = useState(false);
+  const [userID, setUserID] = useState();
 
-  const refresTtoken = async () => {
-    const refreshTokenStr = localStorage.getItem("refresh_token");
-    if (!refreshTokenStr) {
-      setIsLogined(false);
-      setInfoUser(null);
-      setToken(null);
-      setUserID(null);
-      return false;
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const getUserInfo = async () => {
+    // đăng nhập google
+    const urlTokens = readTokensFromUrl();
+    if (urlTokens?.access_token) {
+      localStorage.setItem("access_token", urlTokens.access_token);
+      if (urlTokens.refresh_token) {
+        localStorage.setItem("refresh_token", urlTokens.refresh_token);
+      }
     }
 
-    try {
-      const res = await refreshTokenAPI(refreshTokenStr);
-      if (!res?.access_token) {
-        throw new Error("No access token in response");
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      const UID = getSupabaseUid(accessToken);
+      if (UID) {
+        try {
+          setUserID(UID);
+          const res = await getProfileAPI(UID);
+          setInfoUser(res[0]);
+          setIsLogined(true);
+          setIsloading(false);
+        } catch (error) {
+          console.log("dang chay refetoken");
+          await refetTokent();
+        }
       }
-
-      // Lưu token mới
-      localStorage.setItem("access_token", res.access_token);
-      localStorage.setItem("refresh_token", res.refresh_token);
-
-      // Lấy userID từ token mới
-      const uid = getSupabaseUid(res.access_token);
-      if (!uid) {
-        throw new Error("Invalid token format");
-      }
-
-      // Set state với thông tin mới
-      setToken(res.access_token);
-      setUserID(uid);
-
-      // Thử lấy thông tin user với token mới
-      const userInfo = await getProfileAPI(uid);
-      if (userInfo) {
-        setInfoUser(userInfo);
-        setIsLogined(true);
-        return true;
-      } else {
-        throw new Error("Could not get user info");
-      }
-    } catch (error) {
-      console.log("Refresh token failed:", error);
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      setToken(null);
-      setUserID(null);
-      setInfoUser(null);
+    } else {
       setIsLogined(false);
-      return false;
-    } finally {
       setIsloading(false);
     }
   };
 
-  const getUserInfo = async () => {
-    if (!userID) {
-      setIsLogined(false);
-      setIsloading(false);
-      return;
-    }
+  const refetTokent = async () => {
+    const refetToken = localStorage.getItem("refresh_token");
+    if (refetToken) {
+      try {
+        const res = await refreshTokenAPI(refetToken);
 
-    try {
-      const res = await getProfileAPI(userID);
-      if (res) {
-        setInfoUser(res);
-        setIsLogined(true);
-      } else {
-        // Nếu không lấy được thông tin user, thử refresh token
-        const refreshSuccess = await refresTtoken();
-        if (!refreshSuccess) {
-          setIsLogined(false);
+        if (res) {
+          localStorage.setItem("access_token", res.access_token);
+          localStorage.setItem("refresh_token", res.refresh_token);
+          await getUserInfo();
         }
-      }
-    } catch (error) {
-      console.log("Error getting user info:", error);
-      const refreshSuccess = await refresTtoken();
-      if (!refreshSuccess) {
+      } catch (error) {
         setIsLogined(false);
+        setIsloading(false);
       }
-    } finally {
+    } else {
+      setIsLogined(false);
       setIsloading(false);
     }
   };
@@ -109,65 +76,20 @@ export const AuthContext = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const initAuth = async () => {
-      // Check URL tokens
-      const urlTokens = readTokensFromUrl();
-      if (urlTokens?.access_token) {
-        localStorage.setItem("access_token", urlTokens.access_token);
-        if (urlTokens.refresh_token) {
-          localStorage.setItem("refresh_token", urlTokens.refresh_token);
-        }
-      }
-
-      // Get stored token
-      const accessToken = localStorage.getItem("access_token");
-      if (!accessToken) {
-        setIsLogined(false);
-        setIsloading(false);
-        return;
-      }
-
-      // Set token and extract userID
-      setToken(accessToken);
-      const uid = getSupabaseUid(accessToken);
-      if (uid) {
-        setUserID(uid);
-        // Get user info immediately
-        try {
-          const userInfo = await getProfileAPI(uid);
-          if (userInfo) {
-            setInfoUser(userInfo);
-            setIsLogined(true);
-          }
-        } catch (error) {
-          console.log("Error getting user info:", error);
-        }
-      }
-      setIsloading(false);
-    };
-
-    initAuth();
-  }, []);
-
   const value = {
-    userID,
     infoUser,
-    setInfoUser,
-    isLogined,
     isLoading,
-    setIsLogined,
+    isLogined,
     getUserInfo,
-    validateEmail,
+    userID,
   };
-
-  return <context.Provider value={value}>{children}</context.Provider>;
+  return <contextCre.Provider value={value}>{children}</contextCre.Provider>;
 };
 
 export const useAuthContex = () => {
-  const authContext = useContext(context);
-  if (!authContext) {
-    console.log("error in AuthContext");
+  const context = useContext(contextCre);
+  if (!context) {
+    console.log("error authContext");
   }
-  return authContext;
+  return context;
 };

@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { insertPinAPI, uploaImgAPI } from "../services/api.services";
 import { Await } from "react-router-dom";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 
 function UpLoadPage() {
   const [urlImgDemo, setUrlImgDemo] = useState();

@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginAPI } from "../services/api.services";
 import { useAppContext } from "../context/appContext";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 
 function LoginModal({ handleLoginWithGoogle }) {

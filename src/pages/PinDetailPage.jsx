@@ -10,7 +10,7 @@ import {
   getPinsAPI,
 } from "../services/api.services";
 import { ArrowLeft, Heart } from "lucide-react";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import Loading from "../component/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -177,7 +177,11 @@ export const PinDetailPage = () => {
             </div>
             <div className="w-full">
               <div className="w-full">
-                <img className="object-contain mx-auto max-h-[80vh] rounded-2xl" src={pinDetail?.image_url} alt={pinDetail?.description} />
+                <img
+                  className="object-contain mx-auto max-h-[80vh] rounded-2xl"
+                  src={pinDetail?.image_url}
+                  alt={pinDetail?.description}
+                />
               </div>
             </div>
             <div className=" w-full flex flex-col items-start justify-center gap-3">

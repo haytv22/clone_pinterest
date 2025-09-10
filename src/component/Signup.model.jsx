@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signupAPI } from "../services/api.services";
 import { useAppContext } from "../context/appContext";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 
 function SignupModel({ handleLoginWithGoogle }) {

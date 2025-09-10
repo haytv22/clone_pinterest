@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 import {
   getPinsUserAPI,
   getProfileAPI,
@@ -7,7 +7,9 @@ import {
 } from "../services/api.services";
 import { PenLine } from "lucide-react";
 import { Link } from "react-router-dom";
-import UpdataUserInfoModal from "./UpdataUserInfo.modal";
+import UpdataUserInfoModal from "../component/UpdataUserInfo.modal";
+import defaulAvatar from "../accset/logo/avatar-defaul.png";
+import UpdataPinInfoModal from "../component/UpdataPinInfo.modal";
 
 function ProfilePage() {
   const [dataProfile, setDataProfile] = useState();
@@ -19,7 +21,9 @@ function ProfilePage() {
   const likedMenuRef = useRef();
   const [left, setLeft] = useState();
   const [width, setWidth] = useState();
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalUser, setIsOpenModalUser] = useState(false);
+  const [isOpenModalPin, setIsOpenModalPin] = useState(false);
+  const [pinTarget, setPintarget] = useState();
 
   const getProfile = async () => {
     const res = await getProfileAPI(userID);
@@ -51,8 +55,6 @@ function ProfilePage() {
   const getUserLikedPins = async () => {
     try {
       const res = await getUserLikedPinsAPI(userID);
-      console.log(res);
-
       setLikePins(res);
     } catch (error) {
       console.log(error);
@@ -69,24 +71,32 @@ function ProfilePage() {
   }, []);
   return (
     <div className="w-full">
-      {isOpenModal && (
+      {isOpenModalUser && (
         <UpdataUserInfoModal
-          setIsOpenModal={setIsOpenModal}
-          isOpenModal={isOpenModal}
+          setIsOpenModalUser={setIsOpenModalUser}
+          isOpenModalUser={isOpenModalUser}
           dataProfile={dataProfile}
         />
       )}
+      {isOpenModalPin && (
+        <UpdataPinInfoModal
+          setIsOpenModalPin={setIsOpenModalPin}
+          isOpenModalPin={isOpenModalPin}
+          pinTarget={pinTarget}
+        />
+      )}
+
       <div className="w-full flex flex-col gap-5 items-center justify-center">
         <img
-          className="rounded-full size-[120px]"
-          src={dataProfile?.avatar_url}
+          className="rounded-full size-[180px] object-cover"
+          src={dataProfile?.avatar_url || defaulAvatar}
           alt=""
         />
         <div className="flex flex-col items-center justify-center">
           <p className="text-[36px] font-[700] relative">
             {dataProfile?.full_name}
             <PenLine
-              onClick={() => setIsOpenModal(!isOpenModal)}
+              onClick={() => setIsOpenModalUser(!isOpenModalUser)}
               className="size-5 absolute -right-10 top-[50%] -translate-y-[30%] cursor-pointer"
             />
           </p>
@@ -143,11 +153,12 @@ function ProfilePage() {
                         <div className="group-hover:flex hidden cursor-pointer absolute inset-0 bg-gradient-to-t from-gray-800/80 to-transparent p-4 flex-col items-center justify-center">
                           <div className="w-full h-full flex items-end justify-start relative">
                             <div
-                              // onClick={(e) => {
-                              //   e.preventDefault();
-                              //   e.stopPropagation();
-                              //   setIsOpenModal(!isOpenModal);
-                              // }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setIsOpenModalPin(!isOpenModalPin);
+                                setPintarget(upPin);
+                              }}
                               className="absolute top-0 right-0 p-3 px-5 btn-red rounded-xl cursor-pointer text-white font-bold"
                             >
                               <p>Sửa</p>

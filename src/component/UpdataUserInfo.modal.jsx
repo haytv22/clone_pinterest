@@ -2,12 +2,17 @@ import { ImageUp, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
 import { updataUserProfileAPI, uploaImgAPI } from "../services/api.services";
+import toast from "react-hot-toast";
 
-function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
+function UpdataUserInfoModal({
+  isOpenModalUser,
+  setIsOpenModalUser,
+  dataProfile,
+}) {
   const nameRef = useRef();
   const [urlImgDemo, setUrlImgDemo] = useState();
   const [fileAvatar, setFileAvatar] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handelUpdataUser = async () => {
     const safeName = fileAvatar?.name
@@ -15,28 +20,33 @@ function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
       : "image.jpg";
     const fileName = `${Date.now()}-${safeName}`;
 
+    if (loading) {
+      toast.loading("Đang cập nhật...");
+    }
+
     try {
+      setLoading(true);
       const res = await uploaImgAPI("pins", fileAvatar, fileName);
       const key = res.Key;
       const urlAvatar = `${
         import.meta.env.VITE_SUPABASE_URL
       }/storage/v1/object/public/${key}`;
 
-      console.log(urlAvatar);
       try {
-        console.log(dataProfile.id, nameRef.current.value, urlAvatar);
-
         const res = await updataUserProfileAPI(
           dataProfile.id,
           nameRef.current.value,
           urlAvatar
         );
-        console.log(res);
+        if (res) {
+          toast.success("Cập nhật thành công ✅");
+          setIsOpenModalUser(false);
+        }
       } catch (error) {
-        console.log(error);
+        toast.error("Cập nhật thất bại ❌");
       }
     } catch (error) {
-      console.log(error);
+      toast.error("Cập nhật thất bại ❌");
     }
   };
 
@@ -49,7 +59,7 @@ function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    if (isOpenModal) {
+    if (isOpenModalUser) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -64,7 +74,7 @@ function UpdataUserInfoModal({ isOpenModal, setIsOpenModal, dataProfile }) {
       <div className=" rounded-2xl bg-white w-[480px]">
         <div className="h-[80px] w-full flex items-center justify-between px-5">
           <div
-            onClick={() => setIsOpenModal(!isOpenModal)}
+            onClick={() => setIsOpenModalUser(!isOpenModalUser)}
             className="size-4 rounded-full bg-red-600 cursor-pointer group flex items-center justify-center"
           >
             <X className="group-hover:block hidden size-[14px] font-bold" />

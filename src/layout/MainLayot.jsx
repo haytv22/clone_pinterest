@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
-import { useAuthContex } from "../context/AuthContext2";
+import { useAuthContex } from "../context/AuthContext";
 import Tooltip from "../component/tooltip";
 import CompassMenu from "../component/Dropdown_menu/CompassMenu";
 import UserInfoMenu from "../component/Dropdown_menu/UserInfoMenu";
@@ -135,7 +135,7 @@ function MainLayot() {
           <div className="flex flex-row items-center justify-center gap-1">
             <Link to="/profile" className="relative group">
               <img
-                className="size-[32px] rounded-full cursor-pointer"
+                className="size-[32px] object-cover rounded-full cursor-pointer"
                 src={infoUser?.avatar_url || avatarDefaul}
                 alt=""
               />
