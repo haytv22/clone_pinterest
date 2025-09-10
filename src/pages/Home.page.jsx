@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import { getPinsAPI } from "../services/api.services";
 import { Link } from "react-router-dom";
 import Loading from "../component/Loading";

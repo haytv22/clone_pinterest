@@ -1,12 +1,12 @@
 import React from "react";
-import { UseAuthContext } from "../../context/AuthContext";
+import { useAuthContex } from "../../context/AuthContext2";
 import avatarDefaul from "../../accset/logo/avatar-defaul.png";
 import { logOutAPI } from "../../services/api.services";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 function UserInfoMenu({ className }) {
-  const { infoUser } = UseAuthContext();
+  const { infoUser } = useAuthContex();
   const navigate = useNavigate();
 
   const handelLogout = async () => {

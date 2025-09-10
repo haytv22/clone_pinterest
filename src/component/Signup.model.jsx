@@ -3,12 +3,12 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signupAPI } from "../services/api.services";
 import { useAppContext } from "../context/appContext";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import toast, { Toaster } from "react-hot-toast";
 
 function SignupModel({ handleLoginWithGoogle }) {
   const { isLoginModal, setIsLoginModal } = useAppContext();
-  const { getUserInfo, validateEmail } = UseAuthContext();
+  const { getUserInfo } = useAuthContex();
   const [toggle, setToggle] = useState(false);
   const EmailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -17,6 +17,12 @@ function SignupModel({ handleLoginWithGoogle }) {
   const handleSignUp = async () => {
     const email = EmailRef.current.value;
     const password = passwordRef.current.value;
+
+    const validateEmail = (value) => {
+      // regex cơ bản check email
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(value);
+    };
 
     const emailAuth = validateEmail(email);
 

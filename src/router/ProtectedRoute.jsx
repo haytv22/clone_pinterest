@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import { Navigate, useNavigate } from "react-router-dom";
 import Loading from "../component/Loading";
 
 function ProtectedRoute({ children }) {
-  const { isLogined, isLoading } = UseAuthContext();
+  const { isLogined, isLoading } = useAuthContex();
 
   console.log("loading", isLoading);
   console.log("islogin", isLogined);

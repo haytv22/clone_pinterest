@@ -99,12 +99,6 @@ export const AuthContext = ({ children }) => {
     }
   };
 
-  const validateEmail = (value) => {
-    // regex cơ bản check email
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(value);
-  };
-
   const getSupabaseUid = (tokenStr) => {
     if (!tokenStr) return null;
     try {
@@ -170,7 +164,7 @@ export const AuthContext = ({ children }) => {
   return <context.Provider value={value}>{children}</context.Provider>;
 };
 
-export const UseAuthContext = () => {
+export const useAuthContex = () => {
   const authContext = useContext(context);
   if (!authContext) {
     console.log("error in AuthContext");

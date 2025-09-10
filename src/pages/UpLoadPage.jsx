@@ -3,14 +3,14 @@ import React, { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { insertPinAPI, uploaImgAPI } from "../services/api.services";
 import { Await } from "react-router-dom";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 
 function UpLoadPage() {
   const [urlImgDemo, setUrlImgDemo] = useState();
   const [file, setFile] = useState();
   const descriptionRef = useRef();
   const TitleRef = useRef();
-  const { userID } = UseAuthContext();
+  const { userID } = useAuthContex();
 
   const handelClick = async () => {
     if (TitleRef.current.value && file && descriptionRef.current.value) {

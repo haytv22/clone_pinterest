@@ -31,7 +31,6 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         console.warn("Token hết hạn. Vui lòng đăng nhập lại.");
-        window.location.href = "/login";
       } else {
         return Promise.reject(error.response.data);
       }

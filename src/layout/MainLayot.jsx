@@ -10,14 +10,14 @@ import {
 } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import Tooltip from "../component/tooltip";
 import CompassMenu from "../component/Dropdown_menu/CompassMenu";
 import UserInfoMenu from "../component/Dropdown_menu/UserInfoMenu";
 import { useEffect, useRef, useState } from "react";
 
 function MainLayot() {
-  const { infoUser } = UseAuthContext();
+  const { infoUser } = useAuthContex();
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
   const MenuInfoRef = useRef();
   const [active, setActive] = useState("House");

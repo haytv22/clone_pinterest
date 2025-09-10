@@ -10,7 +10,7 @@ import {
   getPinsAPI,
 } from "../services/api.services";
 import { ArrowLeft, Heart } from "lucide-react";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import toast from "react-hot-toast";
 import Loading from "../component/Loading";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ export const PinDetailPage = () => {
   const [like, setLike] = useState();
   const [countLike, setCountLike] = useState();
   const id = useParams();
-  const { userID } = UseAuthContext();
+  const { userID } = useAuthContex();
   const bottemRef = useRef();
   const LIMIT = 20;
   const navigate = useNavigate();

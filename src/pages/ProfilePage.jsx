@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { UseAuthContext } from "../context/AuthContext";
+import { useAuthContex } from "../context/AuthContext2";
 import {
   getPinsUserAPI,
   getProfileAPI,
@@ -14,8 +14,7 @@ function ProfilePage() {
   const [upPins, setUpPins] = useState();
   const [likePins, setLikePins] = useState();
   const [active, setActive] = useState("upMenu");
-  const { userID, infoUser } = UseAuthContext();
-  console.log(infoUser);
+  const { userID, infoUser } = useAuthContex();
   const upMenuRef = useRef();
   const likedMenuRef = useRef();
   const [left, setLeft] = useState();
