@@ -53,3 +53,6 @@ input {
 .bg-color {
   background-color: #e5e5e0;
 }
+.bg-color:hover {
+  background-color: #e1e1e1;
+}

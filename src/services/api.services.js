@@ -142,3 +142,18 @@ export const updataUserProfileAPI = (userId, Name, linkAvatar) => {
     },
   });
 };
+
+export const updataPinAPI = (pinId, data) => {
+  const url = `/rest/v1/pins?id=eq.${pinId}`;
+  return axiosInstance.patch(url, data);
+};
+
+export const deletePinAPI = (pinId) => {
+  const url = `/rest/v1/pins?id=eq.${pinId}`;
+  return axiosInstance.delete(url, data);
+};
+
+export const deleteImgBucketAPI = (bucketName, nameImg) => {
+  const url = `/storage/v1/object/${bucketName}`;
+  return axiosInstance.delete(url, nameImg);
+};

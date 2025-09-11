@@ -70,7 +70,7 @@ function UpdataUserInfoModal({
     };
   }, []);
   return (
-    <div className="absolute inset-0 bg-gray-400/30 backdrop-blur-[10px] z-1000 flex items-center justify-center">
+    <div className="fixed inset-0 bg-gray-400/30 backdrop-blur-[10px] z-1000 flex items-center justify-center">
       <div className=" rounded-2xl bg-white w-[480px]">
         <div className="h-[80px] w-full flex items-center justify-between px-5">
           <div
