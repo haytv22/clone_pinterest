@@ -150,10 +150,10 @@ export const updataPinAPI = (pinId, data) => {
 
 export const deletePinAPI = (pinId) => {
   const url = `/rest/v1/pins?id=eq.${pinId}`;
-  return axiosInstance.delete(url, data);
+  return axiosInstance.delete(url);
 };
 
 export const deleteImgBucketAPI = (bucketName, nameImg) => {
-  const url = `/storage/v1/object/${bucketName}`;
-  return axiosInstance.delete(url, nameImg);
+  const url = `storage/v1/object/${bucketName}/remove`;
+  return axiosInstance.post(url, { prefixes: [nameImg] });
 };

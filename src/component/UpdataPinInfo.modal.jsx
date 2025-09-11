@@ -2,6 +2,8 @@ import { ImageUp, Trash2, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
 import {
+  deleteImgBucketAPI,
+  deletePinAPI,
   updataPinAPI,
   updataUserProfileAPI,
   uploaImgAPI,
@@ -46,12 +48,33 @@ function UpdataPinInfoModal({ isOpenModalPin, setIsOpenModalPin, pinTarget }) {
   const handleDelete = async () => {
     if (pinTarget.id) {
       try {
-        const res = await handleDelete(pinTarget.id);
-        if (res) {
-          console.log(res);
+        await deletePinAPI(pinTarget.id);
+
+        const nameImg = parseSupabaseUrl(pinTarget.image_url);
+
+        if (nameImg) {
+          try {
+            const res = await deleteImgBucketAPI("pins", nameImg);
+            if (res) {
+              toast.success("Đã xóa ảnh");
+            }
+          } catch (error) {
+            console.log(error);
+            toast.error("Đã có lỗi");
+          }
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        toast.error("Đã có lỗi");
+      }
     }
+  };
+
+  const parseSupabaseUrl = (url) => {
+    const path = new URL(url).pathname;
+    const parts = path.split("/");
+    const nameImg = parts.slice(6).join("/");
+    return nameImg;
   };
 
   const clickOutSide = (e) => {
