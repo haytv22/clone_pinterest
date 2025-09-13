@@ -190,18 +190,21 @@ export const PinDetailPage = () => {
                 <p className="text-[14px]">{pinDetail?.description}</p>
               </div>
               <div className="h-[1px] w-full bg-[#dadada]"></div>
-              <div className="flex gap-2 items-center">
+              <Link
+                to={`/userDetail/${pinDetail?.profile.id}`}
+                className="flex gap-2 items-center"
+              >
                 <img
                   src={pinDetail?.profile.avatar_url}
                   alt={pinDetail?.profile.full_name}
                   className="rounded-full object-cover size-8"
                 />
                 <p className="font-[500]">{pinDetail?.profile.full_name}</p>
-              </div>
+              </Link>
             </div>
           </div>
 
-          <div className="lg:columns-3 columns-2 hidden md:block">
+          <div className="2xl:columns-3 columns-2 hidden md:block">
             {leftPins &&
               leftPins.map((pin) => {
                 return (
@@ -222,7 +225,7 @@ export const PinDetailPage = () => {
           </div>
         </div>
         <div className="col-span-1">
-          <div className="columns-2 lg:columns-3">
+          <div className="columns-2 2xl:columns-3">
             {rightPins &&
               rightPins.map((pin) => {
                 return (

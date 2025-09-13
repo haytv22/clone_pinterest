@@ -8,7 +8,7 @@ import {
   Settings,
   SquarePlus,
 } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import avatarDefaul from "../accset/logo/avatar-defaul.png";
 import { useAuthContex } from "../context/AuthContext";
 import Tooltip from "../component/tooltip";
@@ -20,7 +20,16 @@ function MainLayot() {
   const { infoUser } = useAuthContex();
   const [isOpenUserMenu, setIsOpenUserMenu] = useState(false);
   const MenuInfoRef = useRef();
+  const sreachRef = useRef();
+  const navigate = useNavigate();
   const [active, setActive] = useState("House");
+
+  const handelSreach = (e) => {
+    const sreachValue = sreachRef.current.value;
+    if (e.key == "Enter" && sreachValue) {
+      navigate(`/sreach?q=${sreachValue}`);
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -67,7 +76,6 @@ function MainLayot() {
           </Link>
           <Link
             onClick={() => setActive("Compass")}
-            to="/ideas"
             className={`${
               active == "Compass" ? "bg-[#18181661] hover:bg-[#18181661]" : ""
             } relative group h-[48px] w-[48px] flex items-center justify-center cursor-pointer rounded-[16px] hover:bg-[#18181612]`}
@@ -126,6 +134,8 @@ function MainLayot() {
           <div className="hover:bg-[#e1e1e1] px-5 gap-2 flex flex-1 bg-[#f1f1f1] h-[48px] rounded-2xl items-center justify-center">
             <Search className="size-[16px] text-[#62625B]" />
             <input
+              ref={sreachRef}
+              onKeyDown={handelSreach}
               className="w-[100%] h-full text-[#2f2f2ad6] font-[500] text-[16px] "
               type="text"
               placeholder="Tìm kiếm"

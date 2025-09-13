@@ -8,6 +8,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import UpLoadPage from "../pages/UpLoadPage";
 import { PinDetailPage } from "../pages/PinDetailPage";
 import ProfilePage from "../pages/ProfilePage";
+import UserDetail from "../pages/UserDetail";
+import SreachPage from "../pages/SreachPage";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,8 @@ export const router = createBrowserRouter([
       { path: "pin/:id", element: <PinDetailPage /> },
       { path: "upload", element: <UpLoadPage /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "userDetail/:id", element: <UserDetail /> },
+      { path: "sreach", element: <SreachPage /> },
     ],
   },
   {

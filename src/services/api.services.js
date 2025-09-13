@@ -154,6 +154,15 @@ export const deletePinAPI = (pinId) => {
 };
 
 export const deleteImgBucketAPI = (bucketName, nameImg) => {
-  const url = `storage/v1/object/${bucketName}/remove`;
-  return axiosInstance.post(url, { prefixes: [nameImg] });
+  const url = `/storage/v1/object/${bucketName}/${nameImg}`;
+  return axiosInstance.delete(url);
+};
+
+export const sreachAPI = (from, to, sreachValue) => {
+  const url = `/rest/v1/pins?or=(title.ilike.*${sreachValue}*,description.ilike.*${sreachValue}*)`;
+  return axiosInstance.get(url, {
+    headers: {
+      Range: `${from}-${to}`,
+    },
+  });
 };
